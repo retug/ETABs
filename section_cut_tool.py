@@ -217,17 +217,17 @@ for i in sections:
 shear = test_cut[6]
 moment = test_cut[10]
 
-
-# plt.plot(location,shear, 'ro-')
-# plt.xlabel('location')
-# plt.ylabel('Shear (kips)')
-# plt.title('Shear of the Diaphragm')
-# plt.grid(True)
-# plt.show()      
-
-# plt.plot(location,moment, 'ro-')
-# plt.xlabel('location')
-# plt.ylabel('Moment (kip*ft)')
-# plt.title('Moment of the Diaphragm')
-# plt.grid(True)
-# plt.show()
+#Plots shear results
+plt.plot(location,shear, 'ro-')
+plt.xlabel('location')
+plt.ylabel('Shear (kips)')
+plt.title('Shear of the Diaphragm')
+plt.grid(True)
+plt.show()      
+#Plots moment results
+plt.plot(location,moment, 'ro-')
+plt.xlabel('location')
+plt.ylabel('Moment (kip*ft)')
+plt.title('Moment of the Diaphragm')
+plt.grid(True)
+plt.show()
