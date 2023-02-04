@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ETABSv1;
+using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.Data.Text;
 
 namespace GetSelectedObjects
 {
@@ -53,6 +56,27 @@ namespace GetSelectedObjects
             }
             //writes data to data
             dataGridView1.DataSource = SelectedObjectsList;
+
+            //playing with matrices
+
+            double[,] x = {{ 1.0, 2.0 },
+               { 3.0, 4.0 }};
+
+            Matrix<double> customMatrix = Matrix<double>.Build.DenseOfArray(x);
+            Matrix<double> inverseMyCustomMatrix = customMatrix.Inverse();
+
+            string MatrixTextInverste = inverseMyCustomMatrix.ToString("F2");
+
+
+            Matrix<double> myMatrix = Matrix<double>.Build.Random(3, 4);
+            string MatrixText = myMatrix.ToString("F2");
+            Matrix<double> inverseMyMatrix = myMatrix.Inverse();
+
+            
+
+
+
+
 
 
         }
