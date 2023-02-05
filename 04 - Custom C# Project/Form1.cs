@@ -21,22 +21,47 @@ namespace GetSelectedObjects
 
         //initiate lists
         List<SelectedObjects> SelectedObjectsList;
+        List<LoadCase> LoadCaseList;
         public Form1(ref cSapModel SapModel, ref cPluginCallback Plugin)
         {
             _Plugin = Plugin;
             _SapModel = SapModel;
             InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // do setup things here
+            
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             // must include a call to finish()
             _Plugin.Finish(0);
+        }
+
+        private void ShowLoadCase_Load(object sender, EventArgs e)
+        {
+            int NumberNames = 1;
+            string[] MyName = null;
+
+            _SapModel.LoadCases.GetNameList(ref NumberNames, ref MyName);
+
+            LoadCaseList = new List<LoadCase>();
+
+            for (int i = 0; i < MyName.Length; i++)
+            {
+                LoadCase LComb = new LoadCase();
+                LComb.NumberNames = NumberNames;
+                LComb.MyName = MyName[i];
+                LoadCaseComBox.Items.Add(MyName[i]);
+
+
+
+                LoadCaseList.Add(LComb);
+            }
         }
 
         private void getSelNodeBtn_Click(object sender, EventArgs e)
@@ -70,15 +95,71 @@ namespace GetSelectedObjects
 
             Matrix<double> myMatrix = Matrix<double>.Build.Random(3, 4);
             string MatrixText = myMatrix.ToString("F2");
-            Matrix<double> inverseMyMatrix = myMatrix.Inverse();
+            //Matrix<double> inverseMyMatrix = myMatrix.Inverse();
 
+        }
+
+        private void vectorX_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        //function below limits the input to a decimal number
+        private void vectorX_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            vectorX.MaxLength = 6;
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+        private void vectorX_Enter(object sender, EventArgs e)
+        {
+            vectorX.Text = "";
+            vectorX.ForeColor = Color.Black;
             
+        }
+        private void vectorY_Enter(object sender, EventArgs e)
+        {
+            vectorY.Text = "";
+            vectorY.ForeColor = Color.Black;
+        }
 
 
+        //limits input to numbers
+        private void numSlices_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            vectorX.MaxLength = 6;
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+            // only allow one decimal point
+        }
 
+        //this function checks to make sure inputted value is above 2 and below 1000
+        private void NumSlices_Leave(object sender, EventArgs e)
+        {
+            int num_slices = 0;
+            Int32.TryParse(NumSlices.Text, out num_slices);
+            if (num_slices < 1 && NumSlices.Text != "")
+            {
+                NumSlices.Text = "2";
+                MessageBox.Show("Minimum Allowed Cuts is 2");
 
+            }
+            else if (num_slices > 1000 && NumSlices.Text != "")
+            {
+                NumSlices.Text = "1000";
+                MessageBox.Show("Maximum Allowed Cuts is 1000");
 
-
+            }
         }
     }
 }
