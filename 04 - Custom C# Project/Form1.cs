@@ -22,6 +22,7 @@ namespace GetSelectedObjects
         //initiate lists
         List<SelectedObjects> SelectedObjectsList;
         List<LoadCase> LoadCaseList;
+        List<AreaPoint> AreaPointList;
         public Form1(ref cSapModel SapModel, ref cPluginCallback Plugin)
         {
             _Plugin = Plugin;
@@ -71,32 +72,89 @@ namespace GetSelectedObjects
             string[] ObjectName = null;
             _SapModel.SelectObj.GetSelected(ref NumberItems, ref ObjectType, ref ObjectName);
             SelectedObjectsList = new List<SelectedObjects>();
+            //test to make sure the selected object is only 1 element long and a node
+            if (ObjectType.Length > 1 || ObjectType[0] != 1)
+            {
+                MessageBox.Show("Select only one node");
+            }
+            else
+            {
+                for (int i = 0; i < ObjectType.Length; i++)
+                {
+                    SelectedObjects SelectedObject = new SelectedObjects();
+                    SelectedObject.ObjectType = ObjectType[i];
+                    SelectedObject.ObjectName = ObjectName[i];
+
+                    SelectedObjectsList.Add(SelectedObject);
+                }
+
+                //writes data to data
+                dataGridView1.DataSource = SelectedObjectsList;
+            }
+            //playing with matrices
+
+            //double[,] x = {{ 1.0, 2.0 },
+            //  { 3.0, 4.0 }};
+
+            //Matrix<double> customMatrix = Matrix<double>.Build.DenseOfArray(x);
+            //Matrix<double> inverseMyCustomMatrix = customMatrix.Inverse();
+
+            //string MatrixTextInverste = inverseMyCustomMatrix.ToString("F2");
+
+
+            //Matrix<double> myMatrix = Matrix<double>.Build.Random(3, 4);
+            //string MatrixText = myMatrix.ToString("F2");
+            //Matrix<double> inverseMyMatrix = myMatrix.Inverse();
+
+        }
+
+        private void getSelAreas_Click(object sender, EventArgs e)
+        {
+            int NumberItems = 0;
+            int[] ObjectType = null;
+            string[] ObjectName = null;
+            _SapModel.SelectObj.GetSelected(ref NumberItems, ref ObjectType, ref ObjectName);
+            SelectedObjectsList = new List<SelectedObjects>();
+            AreaPointList = new List<AreaPoint>();
+
+
+
             for (int i = 0; i < ObjectType.Length; i++)
             {
                 SelectedObjects SelectedObject = new SelectedObjects();
                 SelectedObject.ObjectType = ObjectType[i];
                 SelectedObject.ObjectName = ObjectName[i];
 
-                SelectedObjectsList.Add(SelectedObject);
+                int NumberAreaPoints = 0;
+                string[] ObjectNamePnts = null;
+                
+
+                //if the object type is 5, this is a floor
+                if (ObjectType[i] == 5)
+                {
+                    
+                    SelectedObjectsList.Add(SelectedObject);
+                    _SapModel.AreaObj.GetPoints(ObjectName[i], ref NumberAreaPoints, ref ObjectNamePnts);
+                    
+                    //gather all of the points in an individual area object
+                    //AreaPointObject.NumberPoints = NumberAreaPoints;
+                    for (int j = 0; j < ObjectNamePnts.Length; j++)
+                    {
+                        AreaPoint AreaPointObject = new AreaPoint();
+                        AreaPointObject.NumberPoints = NumberAreaPoints;
+                        AreaPointObject.Points = ObjectNamePnts[j];
+                        AreaPointList.Add(AreaPointObject);
+                    }
+                }
+                    
+                else
+                {
+                    ;
+                }
             }
             //writes data to data
-            dataGridView1.DataSource = SelectedObjectsList;
-
-            //playing with matrices
-
-            double[,] x = {{ 1.0, 2.0 },
-               { 3.0, 4.0 }};
-
-            Matrix<double> customMatrix = Matrix<double>.Build.DenseOfArray(x);
-            Matrix<double> inverseMyCustomMatrix = customMatrix.Inverse();
-
-            string MatrixTextInverste = inverseMyCustomMatrix.ToString("F2");
-
-
-            Matrix<double> myMatrix = Matrix<double>.Build.Random(3, 4);
-            string MatrixText = myMatrix.ToString("F2");
-            //Matrix<double> inverseMyMatrix = myMatrix.Inverse();
-
+            dataGridView2.DataSource = SelectedObjectsList;
+            dataGridView3.DataSource = AreaPointList;
         }
 
         private void vectorX_TextChanged(object sender, EventArgs e)
