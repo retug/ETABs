@@ -43,6 +43,8 @@ namespace GetSelectedObjects
             this.button2 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.runAnalysisBtn = new System.Windows.Forms.Button();
+            this.makeSectionCut = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -77,6 +79,7 @@ namespace GetSelectedObjects
             this.vectorX.Text = "Enter X Value";
             this.vectorX.Enter += new System.EventHandler(this.vectorX_Enter);
             this.vectorX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vectorX_KeyPress);
+            this.vectorX.Leave += new System.EventHandler(this.vectorX_TextChanged);
             // 
             // vectorY
             // 
@@ -87,6 +90,7 @@ namespace GetSelectedObjects
             this.vectorY.Text = "Enter Y Value";
             this.vectorY.Enter += new System.EventHandler(this.vectorY_Enter);
             this.vectorY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vectorX_KeyPress);
+            this.vectorY.Leave += new System.EventHandler(this.vectorY_TextChanged);
             // 
             // label1
             // 
@@ -183,11 +187,33 @@ namespace GetSelectedObjects
             this.dataGridView3.Size = new System.Drawing.Size(489, 206);
             this.dataGridView3.TabIndex = 11;
             // 
+            // runAnalysisBtn
+            // 
+            this.runAnalysisBtn.Location = new System.Drawing.Point(554, 206);
+            this.runAnalysisBtn.Name = "runAnalysisBtn";
+            this.runAnalysisBtn.Size = new System.Drawing.Size(170, 49);
+            this.runAnalysisBtn.TabIndex = 12;
+            this.runAnalysisBtn.Text = "Run Analysis";
+            this.runAnalysisBtn.UseVisualStyleBackColor = true;
+            this.runAnalysisBtn.Click += new System.EventHandler(this.runAnalysis_Click);
+            // 
+            // makeSectionCut
+            // 
+            this.makeSectionCut.Location = new System.Drawing.Point(554, 290);
+            this.makeSectionCut.Name = "makeSectionCut";
+            this.makeSectionCut.Size = new System.Drawing.Size(170, 49);
+            this.makeSectionCut.TabIndex = 12;
+            this.makeSectionCut.Text = "Section Cut";
+            this.makeSectionCut.UseVisualStyleBackColor = true;
+            this.makeSectionCut.Click += new System.EventHandler(this.makeSectionCutBtn);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1361, 622);
+            this.Controls.Add(this.makeSectionCut);
+            this.Controls.Add(this.runAnalysisBtn);
             this.Controls.Add(this.dataGridView3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
@@ -226,5 +252,7 @@ namespace GetSelectedObjects
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.Button runAnalysisBtn;
+        private System.Windows.Forms.Button makeSectionCut;
     }
 }
