@@ -238,6 +238,7 @@ namespace GetSelectedObjects
         private void makeSectionCutBtn(object sender, EventArgs e)
         {
             string TableKey = "Section Cut Definitions";
+            //string TableKey = "Material Properties - General";
 
             //retreiving the table data review
 
@@ -260,32 +261,84 @@ namespace GetSelectedObjects
             //trying to createa custom section cut, not working
 
             string[] testETABs_Section_Cut_Data = new string[] { };
-            string[] teststring1 = new string []
-                { "0001", "Quads", "All", "Analysis", "Default", "0","0","0","Top or Right or Positive3","1", "1", "1",
+            string[] teststring1 = new string[]
+                { "0001", "Quads", "All", "Analysis", "Default", "0", "0", "0", "Top or Right or Positive3","1", "1", "1",
                     "0", "10", "0", "1"
                 };
             string[] teststring2 = new string[]
-                { "0001", null , null,null, null, null, null, null,null,null, "1", "2",
-                    "10", "10", "0", "1"
+                { "0001", null , null, null, null, null, null, null, null, null, "1", "2",
+                    "10", "10", "0", null
                 };
             string[] teststring3 = new string[]
-                { "0001", null, null,null, null, null, null, null, null,null, "1", "3",
-                    "10", "10", "1", "1"
+                { "0001", null, null, null, null, null, null, null, null, null, "1", "3",
+                    "10", "10", "1", null
                 };
             string[] teststring4 = new string[]
-                { "0001", null, null,null, null, null, null, null, null,null, "1", "4",
-                    "0", "10", "1", "1"
+                { "0001", null, null, null, null, null, null, null, null, null, "1", "4",
+                    "0", "10", "1", null
                 };
             testETABs_Section_Cut_Data = teststring1.Concat(teststring2).ToArray();
             testETABs_Section_Cut_Data = testETABs_Section_Cut_Data.Concat(teststring3).ToArray();
             testETABs_Section_Cut_Data = testETABs_Section_Cut_Data.Concat(teststring4).ToArray();
 
 
-            
+
             int TableVersiontest = 1;
-            string[] FieldKeysIncludedtest = new string[] {"Name", "Defined By", "Group","Result Type", "Result Location", "Rotation About Z", "Rotation About Y", "Rotation About X",
-                "Element Side", "Number of Quads", "Quad Number", "Point Number", "Quad X", "Quad Y", "Quad Z", "GUID"};
+            string[] FieldKeysIncludedtest = new string[] {"Name", "DefinedBy", "Group", "ResultType", "ResultLoc", "RotAboutZ", "RotAboutY", "RotAboutX",
+                "ElementSide", "NumQuads", "QuadNum", "PointNum", "QuadX", "QuadY", "QuadZ", "GUID"};
             int NumberRecordstest = 4;
+
+
+            //////////////////// TEST 2 /////////////////////////
+
+
+            //string[] testETABs_Section_Cut_Data = new string[] { };
+            //string[] teststring1 = new string[]
+            //    { "THIS_IS_A_TEST", "Group", "All", "Analysis", "Default", "0","0","0","1"};
+            //string[] teststring2 = new string[]
+            //    { "THIS_IS_A_TEST_2", "Group", "All", "Analysis", "Default", "0","0","0","1"};
+
+            //testETABs_Section_Cut_Data = teststring1.Concat(teststring2).ToArray();
+
+
+
+            //int TableVersiontest = 1;
+            //string[] FieldKeysIncludedtest = new string[] {"Name", "Defined By", "Group", "Result Type", "Rotation About Z", "Rotation About Y", "Rotation About X", "GUID"};
+            //int NumberRecordstest = 2;
+
+            //_SapModel.DatabaseTables.SetTableForEditingArray(TableKey, ref TableVersiontest, ref FieldKeysIncludedtest, NumberRecordstest, ref testETABs_Section_Cut_Data);
+
+            //bool FillImportLog = true;
+            //int NumFatalErrors = 0;
+            //int NumErrorMsgs = 0;
+            //int NumWarnMsgs = 0;
+            //int NumInfoMsgs = 0;
+            //string ImportLog = "";
+
+
+            //_SapModel.DatabaseTables.ApplyEditedTables(FillImportLog,ref NumFatalErrors, ref NumErrorMsgs, ref NumWarnMsgs, ref NumInfoMsgs, ref ImportLog);
+
+            //DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
+            //databaseTableInfo.NumErrorMsgs = NumErrorMsgs;
+
+            //databaseTableInfo.ImportLog = ImportLog;
+
+            //////////////////////// test 3 //////////////////////////////
+
+            //string[] testETABs_Section_Cut_Data = new string[] { };
+            //string[] teststring1 = new string[]
+            //    { "THIS_IS_A_TEST", "Group", "All", "Analysis", "Default", "0","0","0",null, null, null, null, null, null, null, "1"};
+            //string[] teststring2 = new string[]
+            //    { "THIS_IS_A_TEST_2", "Group", "All", "Analysis", "Default", "0","0","0", null, null, null, null, null, null, null, "2"};
+
+            //testETABs_Section_Cut_Data = teststring1.Concat(teststring2).ToArray();
+
+
+
+            //int TableVersiontest = 1;
+            //string[] FieldKeysIncludedtest = new string[] {"Name", "Defined By", "Group", "Result Type", "Result Location", "Rotation About Z", "Rotation About Y", "Rotation About X",
+            //    "Element Side", "Number of Quads", "Quad Number", "Point Number", "Quad X", "Quad Y", "Quad Z", "GUID"};
+            //int NumberRecordstest = 2;
 
             _SapModel.DatabaseTables.SetTableForEditingArray(TableKey, ref TableVersiontest, ref FieldKeysIncludedtest, NumberRecordstest, ref testETABs_Section_Cut_Data);
 
@@ -297,9 +350,12 @@ namespace GetSelectedObjects
             string ImportLog = "";
 
 
-            _SapModel.DatabaseTables.ApplyEditedTables(FillImportLog,ref NumFatalErrors, ref NumErrorMsgs, ref NumWarnMsgs, ref NumInfoMsgs, ref ImportLog);
+            _SapModel.DatabaseTables.ApplyEditedTables(FillImportLog, ref NumFatalErrors, ref NumErrorMsgs, ref NumWarnMsgs, ref NumInfoMsgs, ref ImportLog);
 
+            DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
+            databaseTableInfo.NumErrorMsgs = NumErrorMsgs;
 
+            databaseTableInfo.ImportLog = ImportLog;
 
         }
 
