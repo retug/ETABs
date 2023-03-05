@@ -11,6 +11,8 @@ using ETABSv1;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Data.Text;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace GetSelectedObjects
 {
@@ -39,6 +41,7 @@ namespace GetSelectedObjects
         private void Form1_Load(object sender, EventArgs e)
         {
             // do setup things here
+            
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -289,57 +292,6 @@ namespace GetSelectedObjects
             int NumberRecordstest = 4;
 
 
-            //////////////////// TEST 2 /////////////////////////
-
-
-            //string[] testETABs_Section_Cut_Data = new string[] { };
-            //string[] teststring1 = new string[]
-            //    { "THIS_IS_A_TEST", "Group", "All", "Analysis", "Default", "0","0","0","1"};
-            //string[] teststring2 = new string[]
-            //    { "THIS_IS_A_TEST_2", "Group", "All", "Analysis", "Default", "0","0","0","1"};
-
-            //testETABs_Section_Cut_Data = teststring1.Concat(teststring2).ToArray();
-
-
-
-            //int TableVersiontest = 1;
-            //string[] FieldKeysIncludedtest = new string[] {"Name", "Defined By", "Group", "Result Type", "Rotation About Z", "Rotation About Y", "Rotation About X", "GUID"};
-            //int NumberRecordstest = 2;
-
-            //_SapModel.DatabaseTables.SetTableForEditingArray(TableKey, ref TableVersiontest, ref FieldKeysIncludedtest, NumberRecordstest, ref testETABs_Section_Cut_Data);
-
-            //bool FillImportLog = true;
-            //int NumFatalErrors = 0;
-            //int NumErrorMsgs = 0;
-            //int NumWarnMsgs = 0;
-            //int NumInfoMsgs = 0;
-            //string ImportLog = "";
-
-
-            //_SapModel.DatabaseTables.ApplyEditedTables(FillImportLog,ref NumFatalErrors, ref NumErrorMsgs, ref NumWarnMsgs, ref NumInfoMsgs, ref ImportLog);
-
-            //DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
-            //databaseTableInfo.NumErrorMsgs = NumErrorMsgs;
-
-            //databaseTableInfo.ImportLog = ImportLog;
-
-            //////////////////////// test 3 //////////////////////////////
-
-            //string[] testETABs_Section_Cut_Data = new string[] { };
-            //string[] teststring1 = new string[]
-            //    { "THIS_IS_A_TEST", "Group", "All", "Analysis", "Default", "0","0","0",null, null, null, null, null, null, null, "1"};
-            //string[] teststring2 = new string[]
-            //    { "THIS_IS_A_TEST_2", "Group", "All", "Analysis", "Default", "0","0","0", null, null, null, null, null, null, null, "2"};
-
-            //testETABs_Section_Cut_Data = teststring1.Concat(teststring2).ToArray();
-
-
-
-            //int TableVersiontest = 1;
-            //string[] FieldKeysIncludedtest = new string[] {"Name", "Defined By", "Group", "Result Type", "Result Location", "Rotation About Z", "Rotation About Y", "Rotation About X",
-            //    "Element Side", "Number of Quads", "Quad Number", "Point Number", "Quad X", "Quad Y", "Quad Z", "GUID"};
-            //int NumberRecordstest = 2;
-
             _SapModel.DatabaseTables.SetTableForEditingArray(TableKey, ref TableVersiontest, ref FieldKeysIncludedtest, NumberRecordstest, ref testETABs_Section_Cut_Data);
 
             bool FillImportLog = true;
@@ -361,6 +313,9 @@ namespace GetSelectedObjects
 
         private void runAnalysis_Click(object sender, EventArgs e)
         {
+
+            scatterPlot.Visible = true;
+            momentScatterPlot.Visible = true;
             string Name = null;
             double X = 0;
             double Y = 0;
@@ -420,11 +375,13 @@ namespace GetSelectedObjects
             double height = ref_Point.Z;
 
             // creates a list of values between max and min u values.
-            double[] range_values = linspace(Umin+0.1, Umax-0.1, n_cuts);
+            double[] range_values = linspace(Umin+1, Umax-1, n_cuts);
 
             //creates the lists of 4 points
             List<List<MyPoint>> sectionPlanes = new List<List<MyPoint>>();
             List<List<String>> ETABs_Section_Cut_Data = new List<List<String>>();
+
+            /////// Generating all of the data to be utilized to make the section cuts /////
 
             int counter = 0;
             foreach (double i in range_values)
@@ -455,32 +412,185 @@ namespace GetSelectedObjects
                 string name = counter.ToString().PadLeft(4, '0');
 
                 List<string> string1 = new List<string>
-                { name, "Quads", "All", "Analysis", "Default", "0","0","0","Top or Right or Positive3","1", "1", "1",
+                { name, "Quads", "All", "Analysis", "Default", "0", "0", "0", "Top or Right or Positive3","1", "1", "1",
                     sectionPoint1.GlobalCoords[0].ToString(), sectionPoint1.GlobalCoords[1].ToString(), sectionPoint1.GlobalCoords[2].ToString(), "1"
                 };
                 List<string> string2 = new List<string>
-                { name, "", "","", "", "", "", "","","", "1", "2",
-                    sectionPoint2.GlobalCoords[0].ToString(), sectionPoint2.GlobalCoords[1].ToString(), sectionPoint2.GlobalCoords[2].ToString(), ""
+                { name, null , null, null, null, null, null, null, null, null, "1", "2",
+                    sectionPoint2.GlobalCoords[0].ToString(), sectionPoint2.GlobalCoords[1].ToString(), sectionPoint2.GlobalCoords[2].ToString(), null
                 };
                 List<string> string3 = new List<string>
-                { name, "", "","", "", "", "","","","", "1", "3",
-                    sectionPoint3.GlobalCoords[0].ToString(), sectionPoint3.GlobalCoords[1].ToString(), sectionPoint3.GlobalCoords[2].ToString(), ""
+                { name, null , null, null, null, null, null, null, null, null, "1", "3",
+                    sectionPoint3.GlobalCoords[0].ToString(), sectionPoint3.GlobalCoords[1].ToString(), sectionPoint3.GlobalCoords[2].ToString(), null
                 };
                 List<string> string4 = new List<string>
-                { name, "", "","", "", "", "","","","", "1", "4",
-                    sectionPoint4.GlobalCoords[0].ToString(), sectionPoint4.GlobalCoords[1].ToString(), sectionPoint4.GlobalCoords[2].ToString(), ""
+                { name, null , null, null, null, null, null, null, null, null, "1", "4",
+                    sectionPoint4.GlobalCoords[0].ToString(), sectionPoint4.GlobalCoords[1].ToString(), sectionPoint4.GlobalCoords[2].ToString(), null
                 };
 
                 ETABs_Section_Cut_Data.Add(string1);
                 ETABs_Section_Cut_Data.Add(string2);
                 ETABs_Section_Cut_Data.Add(string3);
                 ETABs_Section_Cut_Data.Add(string4);
-
-
                 counter++;
-
-
             }
+
+            /////// Generating all of the data to be utilized to make the section cuts /////
+
+
+            string TableKey = "Section Cut Definitions";
+            string[] FieldKeysIncluded = ETABs_Section_Cut_Data.SelectMany(x => x).ToArray();
+
+            int TableVersiontest = 1;
+            string[] FieldKeysIncludedtest = new string[] {"Name", "DefinedBy", "Group", "ResultType", "ResultLoc", "RotAboutZ", "RotAboutY", "RotAboutX",
+                "ElementSide", "NumQuads", "QuadNum", "PointNum", "QuadX", "QuadY", "QuadZ", "GUID"};
+            int NumberRecordstest = ETABs_Section_Cut_Data.Count*4;
+
+
+            _SapModel.DatabaseTables.SetTableForEditingArray(TableKey, ref TableVersiontest, ref FieldKeysIncludedtest, NumberRecordstest, ref FieldKeysIncluded);
+
+            bool FillImportLog = true;
+            int NumFatalErrors = 0;
+            int NumErrorMsgs = 0;
+            int NumWarnMsgs = 0;
+            int NumInfoMsgs = 0;
+            string ImportLog = "";
+
+
+            _SapModel.DatabaseTables.ApplyEditedTables(FillImportLog, ref NumFatalErrors, ref NumErrorMsgs, ref NumWarnMsgs, ref NumInfoMsgs, ref ImportLog);
+
+            DatabaseTableInfo databaseTableInfo = new DatabaseTableInfo();
+            databaseTableInfo.NumErrorMsgs = NumErrorMsgs;
+
+            databaseTableInfo.ImportLog = ImportLog;
+
+            _SapModel.Analyze.RunAnalysis();
+            //sets to kip, ft, farienheit
+            _SapModel.SetPresentUnits(eUnits.kip_ft_F);
+
+            _SapModel.Results.Setup.SetCaseSelectedForOutput(LoadCaseComBox.SelectedItem.ToString());
+
+
+            int NumberResults = 1;
+            string[] SCut = new string[0];
+            string[] LoadCase = new string[0];
+            string[] StepType = new string[0];
+            double[] StepNum = new double[0];
+            double[] F1 = new double[0];
+            double[] F2 = new double[0];
+            double[] F3 = new double[0];
+            double[] M1 = new double[0];
+            double[] M2 = new double[0];
+            double[] M3 = new double[0];
+
+            _SapModel.Results.SectionCutAnalysis(ref NumberResults, ref SCut, ref LoadCase, ref StepType, ref StepNum, ref F1, ref F2, ref F3, ref M1, ref M2, ref M3);
+
+            SectionResults sectionResults = new SectionResults();
+            sectionResults.F1 = F1;
+            sectionResults.F2 = F2;
+            sectionResults.F3 = F3;
+            sectionResults.M1 = M1;
+            sectionResults.M2 = M2;
+            sectionResults.M3 = M3;
+
+            ////// Shear ScatterPlot //////////
+
+            var scatterShearSeries = new LiveCharts.Wpf.ScatterSeries
+            {
+                Title = "ShearSeries",
+                Values = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>(),
+                Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+                Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+
+
+            };
+
+            for (int i = 0; i < sectionResults.F2.Length; i++)
+            {
+                scatterShearSeries.Values.Add(new LiveCharts.Defaults.ObservablePoint(range_values[i]/12, sectionResults.F2[i]));
+            }
+
+
+            scatterPlot.AxisX.Clear();
+            scatterPlot.AxisX.Add(new LiveCharts.Wpf.Axis
+            {
+                Title = "Location (ft)",
+                Separator = new LiveCharts.Wpf.Separator
+                {
+                    StrokeThickness = 1,
+                    StrokeDashArray = new System.Windows.Media.DoubleCollection(2),
+                    Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
+                }
+
+            }); ;
+            scatterPlot.AxisY.Clear();
+            scatterPlot.AxisY.Add(new LiveCharts.Wpf.Axis
+            {
+                Title = "Shear (kip)",
+                Separator = new LiveCharts.Wpf.Separator
+                {
+                    StrokeThickness = 1,
+                    StrokeDashArray = new System.Windows.Media.DoubleCollection(2),
+                    Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
+                }
+
+
+            });
+
+            scatterPlot.Series.Add(scatterShearSeries);
+
+            scatterPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
+            scatterPlot.Zoom = LiveCharts.ZoomingOptions.Xy;
+
+            ////// Moment ScatterPlot //////////
+
+            var scatterMomentSeries = new LiveCharts.Wpf.ScatterSeries
+            {
+                Title = "Moment (kip*ft)",
+                Values = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>(),
+                Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+                Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+
+
+            };
+
+            for (int i = 0; i < sectionResults.M3.Length; i++)
+            {
+                scatterMomentSeries.Values.Add(new LiveCharts.Defaults.ObservablePoint(range_values[i] / 12, sectionResults.M3[i]));
+            }
+
+
+            momentScatterPlot.AxisX.Clear();
+            momentScatterPlot.AxisX.Add(new LiveCharts.Wpf.Axis
+            {
+                Title = "Location (ft)",
+                Separator = new LiveCharts.Wpf.Separator
+                {
+                    StrokeThickness = 1,
+                    StrokeDashArray = new System.Windows.Media.DoubleCollection(2),
+                    Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
+                }
+
+            }); ;
+            momentScatterPlot.AxisY.Clear();
+            momentScatterPlot.AxisY.Add(new LiveCharts.Wpf.Axis
+            {
+                Title = "Moment (kip*ft)",
+                Separator = new LiveCharts.Wpf.Separator
+                {
+                    StrokeThickness = 1,
+                    StrokeDashArray = new System.Windows.Media.DoubleCollection(2),
+                    Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
+                }
+
+
+            });
+
+            momentScatterPlot.Series.Add(scatterMomentSeries);
+
+            momentScatterPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
+            momentScatterPlot.Zoom = LiveCharts.ZoomingOptions.Xy;
+
         }
     }
 }

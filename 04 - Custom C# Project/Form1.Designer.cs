@@ -45,11 +45,15 @@ namespace GetSelectedObjects
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.runAnalysisBtn = new System.Windows.Forms.Button();
             this.makeSectionCut = new System.Windows.Forms.Button();
+            this.scatterPlot = new LiveCharts.WinForms.CartesianChart();
+            this.momentScatterPlot = new LiveCharts.WinForms.CartesianChart();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // getSelNodeBtn
@@ -176,22 +180,22 @@ namespace GetSelectedObjects
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(275, 72);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(219, 105);
+            this.dataGridView2.Size = new System.Drawing.Size(219, 57);
             this.dataGridView2.TabIndex = 1;
             // 
             // dataGridView3
             // 
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(4, 267);
+            this.dataGridView3.Location = new System.Drawing.Point(15, 571);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(489, 206);
+            this.dataGridView3.Size = new System.Drawing.Size(1132, 135);
             this.dataGridView3.TabIndex = 11;
             // 
             // runAnalysisBtn
             // 
-            this.runAnalysisBtn.Location = new System.Drawing.Point(554, 206);
+            this.runAnalysisBtn.Location = new System.Drawing.Point(532, 107);
             this.runAnalysisBtn.Name = "runAnalysisBtn";
-            this.runAnalysisBtn.Size = new System.Drawing.Size(170, 49);
+            this.runAnalysisBtn.Size = new System.Drawing.Size(170, 22);
             this.runAnalysisBtn.TabIndex = 12;
             this.runAnalysisBtn.Text = "Run Analysis";
             this.runAnalysisBtn.UseVisualStyleBackColor = true;
@@ -199,22 +203,52 @@ namespace GetSelectedObjects
             // 
             // makeSectionCut
             // 
-            this.makeSectionCut.Location = new System.Drawing.Point(554, 290);
+            this.makeSectionCut.Location = new System.Drawing.Point(708, 107);
             this.makeSectionCut.Name = "makeSectionCut";
-            this.makeSectionCut.Size = new System.Drawing.Size(170, 49);
+            this.makeSectionCut.Size = new System.Drawing.Size(170, 22);
             this.makeSectionCut.TabIndex = 12;
             this.makeSectionCut.Text = "Section Cut";
             this.makeSectionCut.UseVisualStyleBackColor = true;
             this.makeSectionCut.Click += new System.EventHandler(this.makeSectionCutBtn);
             // 
+            // scatterPlot
+            // 
+            this.scatterPlot.Location = new System.Drawing.Point(15, 22);
+            this.scatterPlot.Name = "scatterPlot";
+            this.scatterPlot.Size = new System.Drawing.Size(1132, 262);
+            this.scatterPlot.TabIndex = 14;
+            this.scatterPlot.Text = "cartesianChart1";
+            this.scatterPlot.Visible = false;
+            // 
+            // momentScatterPlot
+            // 
+            this.momentScatterPlot.Location = new System.Drawing.Point(15, 300);
+            this.momentScatterPlot.Name = "momentScatterPlot";
+            this.momentScatterPlot.Size = new System.Drawing.Size(1132, 265);
+            this.momentScatterPlot.TabIndex = 14;
+            this.momentScatterPlot.Text = "cartesianChart1";
+            this.momentScatterPlot.Visible = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.momentScatterPlot);
+            this.groupBox3.Controls.Add(this.scatterPlot);
+            this.groupBox3.Controls.Add(this.dataGridView3);
+            this.groupBox3.Location = new System.Drawing.Point(33, 141);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(1162, 725);
+            this.groupBox3.TabIndex = 15;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Results";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1361, 622);
+            this.ClientSize = new System.Drawing.Size(1689, 871);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.makeSectionCut);
             this.Controls.Add(this.runAnalysisBtn);
-            this.Controls.Add(this.dataGridView3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LoadCaseComBox);
@@ -232,6 +266,7 @@ namespace GetSelectedObjects
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -254,5 +289,8 @@ namespace GetSelectedObjects
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.Button runAnalysisBtn;
         private System.Windows.Forms.Button makeSectionCut;
+        private LiveCharts.WinForms.CartesianChart scatterPlot;
+        private LiveCharts.WinForms.CartesianChart momentScatterPlot;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
