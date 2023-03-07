@@ -13,6 +13,7 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Data.Text;
 using LiveCharts;
 using LiveCharts.Wpf;
+using System.Drawing.Drawing2D;
 
 namespace GetSelectedObjects
 {
@@ -27,21 +28,41 @@ namespace GetSelectedObjects
         List<AreaPoint> AreaPointList;
         List<ETABS_Point> ETABsAreaPointsList;
         List<MyPoint> MyPoints;
+        
         //the unique label of the starting point in ETABs
         string startPoint = null;
         VectorValue vectorXValue = new VectorValue();
         VectorValue vectorYValue = new VectorValue();
+
+        
+
+
+
         public Form1(ref cSapModel SapModel, ref cPluginCallback Plugin)
         {
             _Plugin = Plugin;
             _SapModel = SapModel;
             InitializeComponent();
+            
+
+            
+        }
+
+        private void Form1_Paint(object send, PaintEventArgs e)
+        {
+            Graphics mgraphics = e.Graphics;
+            Pen pen = new Pen(Color.FromArgb(255, 140, 105), 1);
+            Rectangle area = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+
+            System.Drawing.Drawing2D.LinearGradientBrush lGB2 = new System.Drawing.Drawing2D.LinearGradientBrush(area, Color.FromArgb(255, 255, 255), Color.FromArgb(159, 159, 159), LinearGradientMode.Vertical);
+            mgraphics.FillRectangle(lGB2, area);
+            mgraphics.DrawRectangle(pen, area);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // do setup things here
-            
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -115,15 +136,15 @@ namespace GetSelectedObjects
 
                 int NumberAreaPoints = 0;
                 string[] ObjectNamePnts = null;
-                
+
 
                 //if the object type is 5, this is a floor
                 if (ObjectType[i] == 5)
                 {
-                    
+
                     SelectedObjectsList.Add(SelectedObject);
                     _SapModel.AreaObj.GetPoints(ObjectName[i], ref NumberAreaPoints, ref ObjectNamePnts);
-                    
+
 
                     for (int j = 0; j < ObjectNamePnts.Length; j++)
                     {
@@ -133,7 +154,7 @@ namespace GetSelectedObjects
                         AreaPointList.Add(AreaPointObject);
                     }
                 }
-                    
+
                 else
                 {
                     ;
@@ -141,12 +162,12 @@ namespace GetSelectedObjects
             }
             //writes data to data
             dataGridView2.DataSource = SelectedObjectsList;
-            
+
         }
 
         private void vectorX_TextChanged(object sender, EventArgs e)
         {
-            VectorValue vectorXValue= new VectorValue();
+            VectorValue vectorXValue = new VectorValue();
             try
             {
                 //need to fix this, currently this does not work
@@ -156,21 +177,21 @@ namespace GetSelectedObjects
             {
                 MessageBox.Show("You must enter decimal number");
             }
-                
+
         }
         private void vectorY_TextChanged(object sender, EventArgs e)
         {
             VectorValue vectorYValue = new VectorValue();
             try
             {
-               //need to fix this, currently this does not work
-               vectorYValue.Value = double.Parse(vectorY.Text);
+                //need to fix this, currently this does not work
+                vectorYValue.Value = double.Parse(vectorY.Text);
             }
             catch (FormatException)
             {
                 MessageBox.Show("You must enter decimal number");
             }
-            
+
         }
         //function below limits the input to a decimal number
         private void vectorX_KeyPress(object sender, KeyPressEventArgs e)
@@ -191,7 +212,7 @@ namespace GetSelectedObjects
         {
             vectorX.Text = "";
             vectorX.ForeColor = Color.Black;
-            
+
         }
         private void vectorY_Enter(object sender, EventArgs e)
         {
@@ -316,6 +337,8 @@ namespace GetSelectedObjects
 
             scatterPlot.Visible = true;
             momentScatterPlot.Visible = true;
+            locationPlot.Visible = true;
+
             string Name = null;
             double X = 0;
             double Y = 0;
@@ -328,9 +351,9 @@ namespace GetSelectedObjects
             ref_Point.Z = Z;
 
 
-            List<double> refPoint = new List<double>() {X,Y,Z};
-            
-            List<double> vector = new List<double>() { double.Parse(vectorX.Text), double.Parse(vectorY.Text), 0};
+            List<double> refPoint = new List<double>() { X, Y, Z };
+
+            List<double> vector = new List<double>() { double.Parse(vectorX.Text), double.Parse(vectorY.Text), 0 };
 
             GlobalCoordinateSystem gcs = new GlobalCoordinateSystem(refPoint, vector);
             ETABsAreaPointsList = new List<ETABS_Point>();
@@ -345,7 +368,7 @@ namespace GetSelectedObjects
                 samplePoint.Z = Z;
                 //ETABsAreaPointsList.Add(samplePoint);
                 List<double> myPoint = new List<double>() { X, Y, Z };
-                
+
                 MyPoint point = new MyPoint(myPoint);
                 point.X = myPoint[0];
                 point.Y = myPoint[1];
@@ -360,14 +383,17 @@ namespace GetSelectedObjects
                 localPoint.Z = point.LocalCoords[2];
                 ETABsAreaPointsList.Add(localPoint);
                 //MyPoints.Add(point);
-                
+
             }
-            dataGridView3.DataSource = ETABsAreaPointsList;
+            
+
             //Finds the max U and V values
             double Umax = ETABsAreaPointsList.Max(x => x.X);
             double Umin = ETABsAreaPointsList.Min(x => x.X);
             double Vmax = ETABsAreaPointsList.Max(x => x.Y);
             double Vmin = ETABsAreaPointsList.Min(x => x.Y);
+
+
 
             double distance = Umax - Umin;
 
@@ -375,7 +401,7 @@ namespace GetSelectedObjects
             double height = ref_Point.Z;
 
             // creates a list of values between max and min u values.
-            double[] range_values = linspace(Umin+1, Umax-1, n_cuts);
+            double[] range_values = linspace(Umin + 1, Umax - 1, n_cuts);
 
             //creates the lists of 4 points
             List<List<MyPoint>> sectionPlanes = new List<List<MyPoint>>();
@@ -387,7 +413,7 @@ namespace GetSelectedObjects
             foreach (double i in range_values)
             {
                 List<MyPoint> sectionPlane = new List<MyPoint>();
-                
+
                 List<double> listPoint1 = new List<double>() { i, Vmin, height - 0.5 };
                 List<double> listPoint2 = new List<double>() { i, Vmin, height + 0.5 };
                 List<double> listPoint3 = new List<double>() { i, Vmax, height + 0.5 };
@@ -412,19 +438,19 @@ namespace GetSelectedObjects
                 string name = counter.ToString().PadLeft(4, '0');
 
                 List<string> string1 = new List<string>
-                { name, "Quads", "All", "Analysis", "Default", "0", "0", "0", "Top or Right or Positive3","1", "1", "1",
+                { name, "Quads", "All", "Analysis", "Default", "0", "0", "0", "Top or Right or Positive3", "1", "1", "1",
                     sectionPoint1.GlobalCoords[0].ToString(), sectionPoint1.GlobalCoords[1].ToString(), sectionPoint1.GlobalCoords[2].ToString(), "1"
                 };
                 List<string> string2 = new List<string>
-                { name, null , null, null, null, null, null, null, null, null, "1", "2",
+                { name, null, null, null, null, null, null, null, null, null, "1", "2",
                     sectionPoint2.GlobalCoords[0].ToString(), sectionPoint2.GlobalCoords[1].ToString(), sectionPoint2.GlobalCoords[2].ToString(), null
                 };
                 List<string> string3 = new List<string>
-                { name, null , null, null, null, null, null, null, null, null, "1", "3",
+                { name, null, null, null, null, null, null, null, null, null, "1", "3",
                     sectionPoint3.GlobalCoords[0].ToString(), sectionPoint3.GlobalCoords[1].ToString(), sectionPoint3.GlobalCoords[2].ToString(), null
                 };
                 List<string> string4 = new List<string>
-                { name, null , null, null, null, null, null, null, null, null, "1", "4",
+                { name, null, null, null, null, null, null, null, null, null, "1", "4",
                     sectionPoint4.GlobalCoords[0].ToString(), sectionPoint4.GlobalCoords[1].ToString(), sectionPoint4.GlobalCoords[2].ToString(), null
                 };
 
@@ -442,9 +468,9 @@ namespace GetSelectedObjects
             string[] FieldKeysIncluded = ETABs_Section_Cut_Data.SelectMany(x => x).ToArray();
 
             int TableVersiontest = 1;
-            string[] FieldKeysIncludedtest = new string[] {"Name", "DefinedBy", "Group", "ResultType", "ResultLoc", "RotAboutZ", "RotAboutY", "RotAboutX",
-                "ElementSide", "NumQuads", "QuadNum", "PointNum", "QuadX", "QuadY", "QuadZ", "GUID"};
-            int NumberRecordstest = ETABs_Section_Cut_Data.Count*4;
+            string[] FieldKeysIncludedtest = new string[] { "Name", "DefinedBy", "Group", "ResultType", "ResultLoc", "RotAboutZ", "RotAboutY", "RotAboutX",
+                "ElementSide", "NumQuads", "QuadNum", "PointNum", "QuadX", "QuadY", "QuadZ", "GUID" };
+            int NumberRecordstest = ETABs_Section_Cut_Data.Count * 4;
 
 
             _SapModel.DatabaseTables.SetTableForEditingArray(TableKey, ref TableVersiontest, ref FieldKeysIncludedtest, NumberRecordstest, ref FieldKeysIncluded);
@@ -493,22 +519,40 @@ namespace GetSelectedObjects
             sectionResults.M2 = M2;
             sectionResults.M3 = M3;
 
-            ////// Shear ScatterPlot //////////
+            
 
-            var scatterShearSeries = new LiveCharts.Wpf.ScatterSeries
+            List<TabularData> TabDataList = new List<TabularData>();
+            for (int i = 0; i < sectionResults.F2.Length; i++)
+            {
+                TabularData sampleData = new TabularData();
+                sampleData.Location = range_values[i] / 12;
+                sampleData.Shear = sectionResults.F2[i];
+                sampleData.Moment = sectionResults.M3[i];
+
+                TabDataList.Add(sampleData);
+            }
+
+            ////// Shear ScatterPlot //////////
+            ///
+            ChartValues<LiveCharts.Defaults.ObservablePoint> shearPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
+
+            for (int i = 0; i < sectionResults.F2.Length; i++)
+            {
+                shearPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = range_values[i] / 12, Y = sectionResults.F2[i] });
+
+            }
+
+            var scatterShearSeries = new LiveCharts.Wpf.LineSeries
             {
                 Title = "ShearSeries",
-                Values = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>(),
+                Values = shearPoints,
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
-                Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+                Fill = System.Windows.Media.Brushes.Transparent,
 
 
             };
 
-            for (int i = 0; i < sectionResults.F2.Length; i++)
-            {
-                scatterShearSeries.Values.Add(new LiveCharts.Defaults.ObservablePoint(range_values[i]/12, sectionResults.F2[i]));
-            }
+            
 
 
             scatterPlot.AxisX.Clear();
@@ -539,25 +583,33 @@ namespace GetSelectedObjects
 
             scatterPlot.Series.Add(scatterShearSeries);
 
-            scatterPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
+            //scatterPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
             scatterPlot.Zoom = LiveCharts.ZoomingOptions.Xy;
 
             ////// Moment ScatterPlot //////////
 
-            var scatterMomentSeries = new LiveCharts.Wpf.ScatterSeries
+
+            ChartValues<LiveCharts.Defaults.ObservablePoint> momentPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
+
+            for (int i = 0; i < sectionResults.M3.Length; i++)
+            {
+
+                momentPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = range_values[i] / 12, Y = sectionResults.M3[i] });
+            }
+
+
+            var scatterMomentSeries = new LiveCharts.Wpf.LineSeries
             {
                 Title = "Moment (kip*ft)",
-                Values = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>(),
+                Values = momentPoints,
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
-                Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+                Fill = System.Windows.Media.Brushes.Transparent,
 
 
             };
 
-            for (int i = 0; i < sectionResults.M3.Length; i++)
-            {
-                scatterMomentSeries.Values.Add(new LiveCharts.Defaults.ObservablePoint(range_values[i] / 12, sectionResults.M3[i]));
-            }
+
+            
 
 
             momentScatterPlot.AxisX.Clear();
@@ -571,7 +623,7 @@ namespace GetSelectedObjects
                     Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 79, 86))
                 }
 
-            }); ;
+            });
             momentScatterPlot.AxisY.Clear();
             momentScatterPlot.AxisY.Add(new LiveCharts.Wpf.Axis
             {
@@ -588,9 +640,56 @@ namespace GetSelectedObjects
 
             momentScatterPlot.Series.Add(scatterMomentSeries);
 
-            momentScatterPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
+            //momentScatterPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
             momentScatterPlot.Zoom = LiveCharts.ZoomingOptions.Xy;
+
+
+
+            ////// Location Plot //////////
+
+            ChartValues<LiveCharts.Defaults.ObservablePoint> areaPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
+
+            for (int i = 0; i < ETABsAreaPointsList.Count(); i++)
+            {
+                areaPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = ETABsAreaPointsList[i].X/12, Y = ETABsAreaPointsList[i].Y/12 });
+            }
+
+
+            var locationSeries = new LiveCharts.Wpf.LineSeries
+            {
+                Title = "Area Locations",
+                Values = areaPoints,
+                Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
+                Fill = System.Windows.Media.Brushes.Transparent,
+            };
+
+            //locationPlot.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(245, 245, 245));
+            locationPlot.Series.Add(locationSeries);
+
+            ChartValues<LiveCharts.Defaults.ObservablePoint> cutPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
+
+            for (int i = 0; i < range_values.Count(); i++)
+            {
+
+                cutPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = Double.Parse(ETABs_Section_Cut_Data[i*4][12])/12, Y = Double.Parse(ETABs_Section_Cut_Data[i*4][13])/12 });
+                cutPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = Double.Parse(ETABs_Section_Cut_Data[i*4+2][12]) / 12, Y = Double.Parse(ETABs_Section_Cut_Data[i*4+2][13
+                    ]) / 12 });
+            }
+
+
+            var cutSeries = new LiveCharts.Wpf.LineSeries
+            {
+                Title = "Cut Locations",
+                Values = cutPoints,
+                Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0)),
+                Fill = System.Windows.Media.Brushes.Transparent,
+            };
+
+            locationPlot.Series.Add(cutSeries);
+
+            dataGridView3.DataSource = TabDataList;
 
         }
     }
 }
+

@@ -29,6 +29,7 @@ namespace GetSelectedObjects
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.getSelNodeBtn = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.vectorX = new System.Windows.Forms.TextBox();
@@ -44,10 +45,13 @@ namespace GetSelectedObjects
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.runAnalysisBtn = new System.Windows.Forms.Button();
-            this.makeSectionCut = new System.Windows.Forms.Button();
             this.scatterPlot = new LiveCharts.WinForms.CartesianChart();
             this.momentScatterPlot = new LiveCharts.WinForms.CartesianChart();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.locationPlot = new LiveCharts.WinForms.CartesianChart();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -58,7 +62,7 @@ namespace GetSelectedObjects
             // 
             // getSelNodeBtn
             // 
-            this.getSelNodeBtn.Location = new System.Drawing.Point(39, 33);
+            this.getSelNodeBtn.Location = new System.Drawing.Point(33, 22);
             this.getSelNodeBtn.Name = "getSelNodeBtn";
             this.getSelNodeBtn.Size = new System.Drawing.Size(136, 31);
             this.getSelNodeBtn.TabIndex = 0;
@@ -69,7 +73,7 @@ namespace GetSelectedObjects
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 72);
+            this.dataGridView1.Location = new System.Drawing.Point(33, 64);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(233, 57);
             this.dataGridView1.TabIndex = 1;
@@ -99,11 +103,12 @@ namespace GetSelectedObjects
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 21);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(38, 566);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 13);
+            this.label1.Size = new System.Drawing.Size(101, 16);
             this.label1.TabIndex = 4;
-            this.label1.Text = "X Vector";
+            this.label1.Text = "Section Cut Plot";
             // 
             // label2
             // 
@@ -116,11 +121,11 @@ namespace GetSelectedObjects
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.vectorY);
             this.groupBox1.Controls.Add(this.vectorX);
-            this.groupBox1.Location = new System.Drawing.Point(532, 30);
+            this.groupBox1.Location = new System.Drawing.Point(532, 18);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(242, 71);
             this.groupBox1.TabIndex = 6;
@@ -130,14 +135,14 @@ namespace GetSelectedObjects
             // LoadCaseComBox
             // 
             this.LoadCaseComBox.FormattingEnabled = true;
-            this.LoadCaseComBox.Location = new System.Drawing.Point(780, 71);
+            this.LoadCaseComBox.Location = new System.Drawing.Point(802, 63);
             this.LoadCaseComBox.Name = "LoadCaseComBox";
             this.LoadCaseComBox.Size = new System.Drawing.Size(151, 21);
             this.LoadCaseComBox.TabIndex = 7;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(780, 39);
+            this.button1.Location = new System.Drawing.Point(802, 27);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(151, 25);
             this.button1.TabIndex = 8;
@@ -157,8 +162,9 @@ namespace GetSelectedObjects
             // 
             // groupBox2
             // 
+            this.groupBox2.BackColor = System.Drawing.Color.Transparent;
             this.groupBox2.Controls.Add(this.NumSlices);
-            this.groupBox2.Location = new System.Drawing.Point(937, 41);
+            this.groupBox2.Location = new System.Drawing.Point(991, 27);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(189, 60);
             this.groupBox2.TabIndex = 10;
@@ -167,7 +173,7 @@ namespace GetSelectedObjects
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(309, 33);
+            this.button2.Location = new System.Drawing.Point(275, 22);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(136, 31);
             this.button2.TabIndex = 0;
@@ -178,7 +184,7 @@ namespace GetSelectedObjects
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(275, 72);
+            this.dataGridView2.Location = new System.Drawing.Point(275, 64);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.Size = new System.Drawing.Size(219, 57);
             this.dataGridView2.TabIndex = 1;
@@ -186,30 +192,24 @@ namespace GetSelectedObjects
             // dataGridView3
             // 
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(15, 571);
+            this.dataGridView3.Location = new System.Drawing.Point(603, 600);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(1132, 135);
+            this.dataGridView3.Size = new System.Drawing.Size(544, 186);
             this.dataGridView3.TabIndex = 11;
             // 
             // runAnalysisBtn
             // 
-            this.runAnalysisBtn.Location = new System.Drawing.Point(532, 107);
+            this.runAnalysisBtn.BackColor = System.Drawing.Color.Transparent;
+            this.runAnalysisBtn.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.runAnalysisBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.runAnalysisBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(140)))), ((int)(((byte)(105)))));
+            this.runAnalysisBtn.Location = new System.Drawing.Point(802, 99);
             this.runAnalysisBtn.Name = "runAnalysisBtn";
-            this.runAnalysisBtn.Size = new System.Drawing.Size(170, 22);
+            this.runAnalysisBtn.Size = new System.Drawing.Size(151, 36);
             this.runAnalysisBtn.TabIndex = 12;
             this.runAnalysisBtn.Text = "Run Analysis";
-            this.runAnalysisBtn.UseVisualStyleBackColor = true;
+            this.runAnalysisBtn.UseVisualStyleBackColor = false;
             this.runAnalysisBtn.Click += new System.EventHandler(this.runAnalysis_Click);
-            // 
-            // makeSectionCut
-            // 
-            this.makeSectionCut.Location = new System.Drawing.Point(708, 107);
-            this.makeSectionCut.Name = "makeSectionCut";
-            this.makeSectionCut.Size = new System.Drawing.Size(170, 22);
-            this.makeSectionCut.TabIndex = 12;
-            this.makeSectionCut.Text = "Section Cut";
-            this.makeSectionCut.UseVisualStyleBackColor = true;
-            this.makeSectionCut.Click += new System.EventHandler(this.makeSectionCutBtn);
             // 
             // scatterPlot
             // 
@@ -231,23 +231,67 @@ namespace GetSelectedObjects
             // 
             // groupBox3
             // 
+            this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.locationPlot);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.momentScatterPlot);
             this.groupBox3.Controls.Add(this.scatterPlot);
             this.groupBox3.Controls.Add(this.dataGridView3);
             this.groupBox3.Location = new System.Drawing.Point(33, 141);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1162, 725);
+            this.groupBox3.Size = new System.Drawing.Size(1162, 802);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Results";
+            // 
+            // locationPlot
+            // 
+            this.locationPlot.Location = new System.Drawing.Point(15, 585);
+            this.locationPlot.Name = "locationPlot";
+            this.locationPlot.Size = new System.Drawing.Size(582, 211);
+            this.locationPlot.TabIndex = 14;
+            this.locationPlot.Text = "Location Plot";
+            this.locationPlot.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(38, 291);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(104, 16);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Moment Results";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(38, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(92, 16);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Shear Results";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline);
+            this.label5.Location = new System.Drawing.Point(600, 566);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(87, 16);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Tabular Data";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1689, 871);
+            this.ClientSize = new System.Drawing.Size(1215, 982);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.makeSectionCut);
             this.Controls.Add(this.runAnalysisBtn);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
@@ -257,8 +301,10 @@ namespace GetSelectedObjects
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.getSelNodeBtn);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Section Cut Tool";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -267,6 +313,7 @@ namespace GetSelectedObjects
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -288,9 +335,12 @@ namespace GetSelectedObjects
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.Button runAnalysisBtn;
-        private System.Windows.Forms.Button makeSectionCut;
         private LiveCharts.WinForms.CartesianChart scatterPlot;
         private LiveCharts.WinForms.CartesianChart momentScatterPlot;
         private System.Windows.Forms.GroupBox groupBox3;
+        private LiveCharts.WinForms.CartesianChart locationPlot;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
     }
 }
