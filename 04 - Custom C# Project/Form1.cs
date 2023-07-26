@@ -97,8 +97,13 @@ namespace GetSelectedObjects
             string[] ObjectName = null;
             _SapModel.SelectObj.GetSelected(ref NumberItems, ref ObjectType, ref ObjectName);
             SelectedObjectsList = new List<SelectedObjects>();
+
             //test to make sure the selected object is only 1 element long and a node
-            if (ObjectType.Length > 1 || ObjectType[0] != 1)
+            if (ObjectType == null )
+            {
+                MessageBox.Show("Select node first, then click the button");
+            }
+            else if (ObjectType.Length > 1 || ObjectType[0] != 1)
             {
                 MessageBox.Show("Select only one node");
             }
@@ -126,43 +131,48 @@ namespace GetSelectedObjects
             SelectedObjectsList = new List<SelectedObjects>();
             AreaPointList = new List<AreaPoint>();
 
-
-
-            for (int i = 0; i < ObjectType.Length; i++)
+            // ensures users select an object first
+            if (ObjectType == null)
             {
-                SelectedObjects SelectedObject = new SelectedObjects();
-                SelectedObject.ObjectType = ObjectType[i];
-                SelectedObject.ObjectName = ObjectName[i];
-
-                int NumberAreaPoints = 0;
-                string[] ObjectNamePnts = null;
-
-
-                //if the object type is 5, this is a floor
-                if (ObjectType[i] == 5)
+                MessageBox.Show("Select area(s) first, then click the button");
+            }
+            else
+            {
+                for (int i = 0; i < ObjectType.Length; i++)
                 {
+                    SelectedObjects SelectedObject = new SelectedObjects();
+                    SelectedObject.ObjectType = ObjectType[i];
+                    SelectedObject.ObjectName = ObjectName[i];
 
-                    SelectedObjectsList.Add(SelectedObject);
-                    _SapModel.AreaObj.GetPoints(ObjectName[i], ref NumberAreaPoints, ref ObjectNamePnts);
+                    int NumberAreaPoints = 0;
+                    string[] ObjectNamePnts = null;
 
 
-                    for (int j = 0; j < ObjectNamePnts.Length; j++)
+                    //if the object type is 5, this is a floor
+                    if (ObjectType[i] == 5)
                     {
-                        AreaPoint AreaPointObject = new AreaPoint();
-                        AreaPointObject.NumberPoints = NumberAreaPoints;
-                        AreaPointObject.Points = ObjectNamePnts[j];
-                        AreaPointList.Add(AreaPointObject);
+
+                        SelectedObjectsList.Add(SelectedObject);
+                        _SapModel.AreaObj.GetPoints(ObjectName[i], ref NumberAreaPoints, ref ObjectNamePnts);
+
+
+                        for (int j = 0; j < ObjectNamePnts.Length; j++)
+                        {
+                            AreaPoint AreaPointObject = new AreaPoint();
+                            AreaPointObject.NumberPoints = NumberAreaPoints;
+                            AreaPointObject.Points = ObjectNamePnts[j];
+                            AreaPointList.Add(AreaPointObject);
+                        }
+                    }
+
+                    else
+                    {
+                        ;
                     }
                 }
-
-                else
-                {
-                    ;
-                }
+                //writes data to data
+                dataGridView2.DataSource = SelectedObjectsList;
             }
-            //writes data to data
-            dataGridView2.DataSource = SelectedObjectsList;
-
         }
 
         private void vectorX_TextChanged(object sender, EventArgs e)
@@ -251,6 +261,14 @@ namespace GetSelectedObjects
 
             }
         }
+
+        //this function clears current input
+        private void NumSlices_Enter(object sender, EventArgs e)
+        {
+            NumSlices.Text = "";
+            NumSlices.ForeColor = Color.Black;
+        }
+
 
         public static double[] linspace(double startval, double endval, int steps)
         {
@@ -741,6 +759,21 @@ namespace GetSelectedObjects
         private void all_Other_Units_CheckedChanged(object sender, EventArgs e)
         {
             US_Units.Checked = false;
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void vectorX_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void NumSlices_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

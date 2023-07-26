@@ -37,6 +37,7 @@ namespace GetSelectedObjects
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.LoadCaseComBox = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.NumSlices = new System.Windows.Forms.TextBox();
@@ -52,10 +53,9 @@ namespace GetSelectedObjects
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.US_Units = new System.Windows.Forms.RadioButton();
             this.all_Other_Units = new System.Windows.Forms.RadioButton();
+            this.US_Units = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -82,6 +82,7 @@ namespace GetSelectedObjects
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(233, 57);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // vectorX
             // 
@@ -90,6 +91,7 @@ namespace GetSelectedObjects
             this.vectorX.Size = new System.Drawing.Size(100, 20);
             this.vectorX.TabIndex = 2;
             this.vectorX.Text = "Enter X Value";
+            this.vectorX.TextChanged += new System.EventHandler(this.vectorX_TextChanged_1);
             this.vectorX.Enter += new System.EventHandler(this.vectorX_Enter);
             this.vectorX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vectorX_KeyPress);
             this.vectorX.Leave += new System.EventHandler(this.vectorX_TextChanged);
@@ -138,6 +140,15 @@ namespace GetSelectedObjects
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input Vector";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 22);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "X Vector";
+            // 
             // LoadCaseComBox
             // 
             this.LoadCaseComBox.FormattingEnabled = true;
@@ -163,6 +174,8 @@ namespace GetSelectedObjects
             this.NumSlices.Size = new System.Drawing.Size(154, 20);
             this.NumSlices.TabIndex = 9;
             this.NumSlices.Text = "Number of Sections";
+            this.NumSlices.TextChanged += new System.EventHandler(this.NumSlices_TextChanged);
+            this.NumSlices.Enter += new System.EventHandler(this.NumSlices_Enter);
             this.NumSlices.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numSlices_KeyPress);
             this.NumSlices.Leave += new System.EventHandler(this.NumSlices_Leave);
             // 
@@ -292,15 +305,6 @@ namespace GetSelectedObjects
             this.label5.TabIndex = 4;
             this.label5.Text = "Tabular Data";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 22);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(48, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "X Vector";
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.all_Other_Units);
@@ -311,18 +315,6 @@ namespace GetSelectedObjects
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Units";
-            // 
-            // US_Units
-            // 
-            this.US_Units.AutoSize = true;
-            this.US_Units.Location = new System.Drawing.Point(25, 19);
-            this.US_Units.Name = "US_Units";
-            this.US_Units.Size = new System.Drawing.Size(55, 17);
-            this.US_Units.TabIndex = 0;
-            this.US_Units.TabStop = true;
-            this.US_Units.Text = "Kip, Ft";
-            this.US_Units.UseVisualStyleBackColor = true;
-            this.US_Units.CheckedChanged += new System.EventHandler(this.US_Units_CheckedChanged);
             // 
             // all_Other_Units
             // 
@@ -335,6 +327,18 @@ namespace GetSelectedObjects
             this.all_Other_Units.Text = "kN, M";
             this.all_Other_Units.UseVisualStyleBackColor = true;
             this.all_Other_Units.CheckedChanged += new System.EventHandler(this.all_Other_Units_CheckedChanged);
+            // 
+            // US_Units
+            // 
+            this.US_Units.AutoSize = true;
+            this.US_Units.Location = new System.Drawing.Point(25, 19);
+            this.US_Units.Name = "US_Units";
+            this.US_Units.Size = new System.Drawing.Size(55, 17);
+            this.US_Units.TabIndex = 0;
+            this.US_Units.TabStop = true;
+            this.US_Units.Text = "Kip, Ft";
+            this.US_Units.UseVisualStyleBackColor = true;
+            this.US_Units.CheckedChanged += new System.EventHandler(this.US_Units_CheckedChanged);
             // 
             // Form1
             // 
