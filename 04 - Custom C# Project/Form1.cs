@@ -335,6 +335,14 @@ namespace GetSelectedObjects
         private void runAnalysis_Click(object sender, EventArgs e)
         {
 
+            if (US_Units.Checked == true)
+            {
+                _SapModel.SetPresentUnits(eUnits.kip_ft_F);
+            }
+            else
+            {
+                _SapModel.SetPresentUnits(eUnits.kN_m_C);
+            }
             scatterPlot.Visible = true;
             momentScatterPlot.Visible = true;
             locationPlot.Visible = true;
@@ -385,7 +393,7 @@ namespace GetSelectedObjects
                 //MyPoints.Add(point);
 
             }
-            
+
 
             //Finds the max U and V values
             double Umax = ETABsAreaPointsList.Max(x => x.X);
@@ -393,7 +401,17 @@ namespace GetSelectedObjects
             double Vmax = ETABsAreaPointsList.Max(x => x.Y);
             double Vmin = ETABsAreaPointsList.Min(x => x.Y);
 
+            //angle for rotating the local axis of the section cut
 
+            double angle = 0;
+            if (double.Parse(vectorY.Text) == 0)
+            {
+                angle = 90;
+            }
+            else
+            {
+                angle = Math.Atan(double.Parse(vectorX.Text) / double.Parse(vectorY.Text)) * 180 * Math.PI;
+            }
 
             double distance = Umax - Umin;
 
@@ -437,8 +455,10 @@ namespace GetSelectedObjects
                 sectionPlanes.Add(sectionPlane);
                 string name = counter.ToString().PadLeft(4, '0');
 
+
+
                 List<string> string1 = new List<string>
-                { name, "Quads", "All", "Analysis", "Default", "0", "0", "0", "Top or Right or Positive3", "1", "1", "1",
+                { name, "Quads", "All", "Analysis", "Default", angle.ToString(), "0", "0", "Top or Right or Positive3", "1", "1", "1",
                     sectionPoint1.GlobalCoords[0].ToString(), sectionPoint1.GlobalCoords[1].ToString(), sectionPoint1.GlobalCoords[2].ToString(), "1"
                 };
                 List<string> string2 = new List<string>
@@ -492,7 +512,7 @@ namespace GetSelectedObjects
 
             _SapModel.Analyze.RunAnalysis();
             //sets to kip, ft, farienheit
-            _SapModel.SetPresentUnits(eUnits.kip_ft_F);
+            //_SapModel.SetPresentUnits(eUnits.kip_ft_F);
 
             _SapModel.Results.Setup.SetCaseSelectedForOutput(LoadCaseComBox.SelectedItem.ToString());
 
@@ -525,20 +545,40 @@ namespace GetSelectedObjects
             for (int i = 0; i < sectionResults.F2.Length; i++)
             {
                 TabularData sampleData = new TabularData();
-                sampleData.Location = range_values[i] / 12;
-                sampleData.Shear = sectionResults.F2[i];
+                sampleData.Location = range_values[i] ;
+                sampleData.Shear = sectionResults.F1[i];
                 sampleData.Moment = sectionResults.M3[i];
+                sampleData.Axial = sectionResults.F2[i];
 
                 TabDataList.Add(sampleData);
             }
 
-            ////// Shear ScatterPlot //////////
-            ///
-            ChartValues<LiveCharts.Defaults.ObservablePoint> shearPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
+            //// Setting Up Unit Titles //////
 
-            for (int i = 0; i < sectionResults.F2.Length; i++)
+            string titleMoment = "";
+            string titleShear = "";
+            string titleLocation = "";
+            if (US_Units.Checked == true)
             {
-                shearPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = range_values[i] / 12, Y = sectionResults.F2[i] });
+                titleMoment = "Moment (kip*ft)";
+                titleShear = "Shear (kip)";
+                titleLocation = "Location (ft)";
+            }
+            else
+            {
+                titleMoment = "Moment (kN*m)";
+                titleShear = "Shear (kN)";
+                titleLocation = "Location (m)";
+            }
+
+
+                ////// Shear ScatterPlot //////////
+                ///
+                ChartValues<LiveCharts.Defaults.ObservablePoint> shearPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
+
+            for (int i = 0; i < sectionResults.F1.Length; i++)
+            {
+                shearPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = range_values[i] , Y = sectionResults.F1[i] });
 
             }
 
@@ -558,7 +598,7 @@ namespace GetSelectedObjects
             scatterPlot.AxisX.Clear();
             scatterPlot.AxisX.Add(new LiveCharts.Wpf.Axis
             {
-                Title = "Location (ft)",
+                Title = titleLocation,
                 Separator = new LiveCharts.Wpf.Separator
                 {
                     StrokeThickness = 1,
@@ -570,7 +610,7 @@ namespace GetSelectedObjects
             scatterPlot.AxisY.Clear();
             scatterPlot.AxisY.Add(new LiveCharts.Wpf.Axis
             {
-                Title = "Shear (kip)",
+                Title = titleShear,
                 Separator = new LiveCharts.Wpf.Separator
                 {
                     StrokeThickness = 1,
@@ -588,19 +628,21 @@ namespace GetSelectedObjects
 
             ////// Moment ScatterPlot //////////
 
+            
+
 
             ChartValues<LiveCharts.Defaults.ObservablePoint> momentPoints = new LiveCharts.ChartValues<LiveCharts.Defaults.ObservablePoint>();
 
             for (int i = 0; i < sectionResults.M3.Length; i++)
             {
 
-                momentPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = range_values[i] / 12, Y = sectionResults.M3[i] });
+                momentPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = range_values[i] , Y = sectionResults.M3[i] });
             }
 
 
             var scatterMomentSeries = new LiveCharts.Wpf.LineSeries
             {
-                Title = "Moment (kip*ft)",
+                Title = titleMoment,
                 Values = momentPoints,
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 140, 105)),
                 Fill = System.Windows.Media.Brushes.Transparent,
@@ -615,7 +657,7 @@ namespace GetSelectedObjects
             momentScatterPlot.AxisX.Clear();
             momentScatterPlot.AxisX.Add(new LiveCharts.Wpf.Axis
             {
-                Title = "Location (ft)",
+                Title = titleLocation,
                 Separator = new LiveCharts.Wpf.Separator
                 {
                     StrokeThickness = 1,
@@ -627,7 +669,7 @@ namespace GetSelectedObjects
             momentScatterPlot.AxisY.Clear();
             momentScatterPlot.AxisY.Add(new LiveCharts.Wpf.Axis
             {
-                Title = "Moment (kip*ft)",
+                Title = titleMoment,
                 Separator = new LiveCharts.Wpf.Separator
                 {
                     StrokeThickness = 1,
@@ -651,7 +693,7 @@ namespace GetSelectedObjects
 
             for (int i = 0; i < ETABsAreaPointsList.Count(); i++)
             {
-                areaPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = ETABsAreaPointsList[i].X/12, Y = ETABsAreaPointsList[i].Y/12 });
+                areaPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = ETABsAreaPointsList[i].X, Y = ETABsAreaPointsList[i].Y });
             }
 
 
@@ -671,9 +713,9 @@ namespace GetSelectedObjects
             for (int i = 0; i < range_values.Count(); i++)
             {
 
-                cutPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = Double.Parse(ETABs_Section_Cut_Data[i*4][12])/12, Y = Double.Parse(ETABs_Section_Cut_Data[i*4][13])/12 });
-                cutPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = Double.Parse(ETABs_Section_Cut_Data[i*4+2][12]) / 12, Y = Double.Parse(ETABs_Section_Cut_Data[i*4+2][13
-                    ]) / 12 });
+                cutPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = Double.Parse(ETABs_Section_Cut_Data[i*4][12]), Y = Double.Parse(ETABs_Section_Cut_Data[i*4][13]) });
+                cutPoints.Add(new LiveCharts.Defaults.ObservablePoint { X = Double.Parse(ETABs_Section_Cut_Data[i*4+2][12]), Y = Double.Parse(ETABs_Section_Cut_Data[i*4+2][13
+                    ]) });
             }
 
 
@@ -689,6 +731,16 @@ namespace GetSelectedObjects
 
             dataGridView3.DataSource = TabDataList;
 
+        }
+
+        private void US_Units_CheckedChanged(object sender, EventArgs e)
+        {
+            all_Other_Units.Checked = false;
+        }
+
+        private void all_Other_Units_CheckedChanged(object sender, EventArgs e)
+        {
+            US_Units.Checked = false;
         }
     }
 }

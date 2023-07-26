@@ -49,15 +49,20 @@ namespace GetSelectedObjects
             this.momentScatterPlot = new LiveCharts.WinForms.CartesianChart();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.locationPlot = new LiveCharts.WinForms.CartesianChart();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.US_Units = new System.Windows.Forms.RadioButton();
+            this.all_Other_Units = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // getSelNodeBtn
@@ -122,10 +127,11 @@ namespace GetSelectedObjects
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.vectorY);
             this.groupBox1.Controls.Add(this.vectorX);
-            this.groupBox1.Location = new System.Drawing.Point(532, 18);
+            this.groupBox1.Location = new System.Drawing.Point(532, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(242, 71);
             this.groupBox1.TabIndex = 6;
@@ -217,7 +223,7 @@ namespace GetSelectedObjects
             this.scatterPlot.Name = "scatterPlot";
             this.scatterPlot.Size = new System.Drawing.Size(1132, 262);
             this.scatterPlot.TabIndex = 14;
-            this.scatterPlot.Text = "cartesianChart1";
+            this.scatterPlot.Text = "Units";
             this.scatterPlot.Visible = false;
             // 
             // momentScatterPlot
@@ -256,16 +262,6 @@ namespace GetSelectedObjects
             this.locationPlot.Text = "Location Plot";
             this.locationPlot.Visible = false;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(38, 291);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(104, 16);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Moment Results";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -275,6 +271,16 @@ namespace GetSelectedObjects
             this.label4.Size = new System.Drawing.Size(92, 16);
             this.label4.TabIndex = 4;
             this.label4.Text = "Shear Results";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(38, 291);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(104, 16);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Moment Results";
             // 
             // label5
             // 
@@ -286,11 +292,56 @@ namespace GetSelectedObjects
             this.label5.TabIndex = 4;
             this.label5.Text = "Tabular Data";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 22);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "X Vector";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.all_Other_Units);
+            this.groupBox4.Controls.Add(this.US_Units);
+            this.groupBox4.Location = new System.Drawing.Point(533, 89);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(240, 46);
+            this.groupBox4.TabIndex = 16;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Units";
+            // 
+            // US_Units
+            // 
+            this.US_Units.AutoSize = true;
+            this.US_Units.Location = new System.Drawing.Point(25, 19);
+            this.US_Units.Name = "US_Units";
+            this.US_Units.Size = new System.Drawing.Size(55, 17);
+            this.US_Units.TabIndex = 0;
+            this.US_Units.TabStop = true;
+            this.US_Units.Text = "Kip, Ft";
+            this.US_Units.UseVisualStyleBackColor = true;
+            this.US_Units.CheckedChanged += new System.EventHandler(this.US_Units_CheckedChanged);
+            // 
+            // all_Other_Units
+            // 
+            this.all_Other_Units.AutoSize = true;
+            this.all_Other_Units.Location = new System.Drawing.Point(129, 19);
+            this.all_Other_Units.Name = "all_Other_Units";
+            this.all_Other_Units.Size = new System.Drawing.Size(54, 17);
+            this.all_Other_Units.TabIndex = 0;
+            this.all_Other_Units.TabStop = true;
+            this.all_Other_Units.Text = "kN, M";
+            this.all_Other_Units.UseVisualStyleBackColor = true;
+            this.all_Other_Units.CheckedChanged += new System.EventHandler(this.all_Other_Units_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1215, 982);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.runAnalysisBtn);
             this.Controls.Add(this.groupBox2);
@@ -314,6 +365,8 @@ namespace GetSelectedObjects
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -342,5 +395,9 @@ namespace GetSelectedObjects
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton all_Other_Units;
+        private System.Windows.Forms.RadioButton US_Units;
     }
 }
